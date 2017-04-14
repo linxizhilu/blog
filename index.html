@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>test Marked</title>
+	<link rel="stylesheet" type="text/css" href="css/normalize.css">
+	<link rel="stylesheet" type="text/css" href="css/marked.css">
+	<script src="js/marked.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/prism.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+<div id="content">
+
+</div>
+</body>
+<script type="text/javascript">
+
+var content = document.querySelector('#content');
+var q = location.search.split('=')[1] || 'symbol';
+	console.log(q);
+	window.fetch('md/'+q+'.md').then(function(data){
+		return data.text();
+
+	},function(err){
+		console.log(err);
+	}).then(function(data){
+		content.innerHTML = marked(data);
+		// 完成代码高亮
+	    ([]).map.call(document.querySelectorAll('code'),function(dom,i) {
+	      Prism.highlightElement(dom);
+	    });
+	})
+</script>
+</html>
