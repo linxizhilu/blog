@@ -49,10 +49,10 @@ pm2 start app.js -i 0 --name "api"
 pm2 list
 ```
 [pm2 list]: ../images/pm2list.jpg "pm2 list"
-<img src="images/pm2list.jpg" style="width:100%;max-width: 100%;">
+<img src="../images/pm2list.jpg" style="width:100%;max-width: 100%;">
+<br/>
 ↓监视每个node进程的CPU和内存的使用情况。
 ```javascript
 pm2 monit
 ```
-[pm2 monit]: ../images/pm2monit.jpg "pm2 monit"
-<img src="images/pm2monit.jpg" style="width:100%;max-width: 100%;">
+<img src="../images/pm2monit.jpg" style="width:100%;max-width: 100%;">
