@@ -12,7 +12,7 @@
 
 </div>
 
-<div id="content">
+<div id="content" style="transition: opacity 0.5s ease 0s;opacity:1">
 
 </div>
 </body>
@@ -23,6 +23,7 @@ var ary = [],
 var sidebarDom = document.querySelector('#sidebar');
 getData({url:'readme.md',
 		data:'',
+		key:'sidebar',
 		fn:function(data){
 			sidebarDom.innerHTML = marked(data)
 			var navDoms = sidebarDom.querySelectorAll('h5 a');
@@ -31,7 +32,6 @@ getData({url:'readme.md',
 					dom.addEventListener('click',function(){
 					var self = this,
 						title = self.title;
-						console.log(title);
 						history.pushState({t:title},'','index.html?t='+title);
 						updateContent();
 					})
@@ -49,22 +49,38 @@ function getPage(){
 
 updateContent();
 function updateContent(){
+	var key = getPage();
 	getData({
-			url:'md/'+getPage()+'.md',
+			url:'md/'+key+'.md',
+			key:key,
 			data:'',
 			fn:function(data){
+				contentDom.style.opacity=0;
 				contentDom.innerHTML = marked(data);
+				contentDom.style.opacity=1;
 				// 完成代码高亮
 			    forEach_native.call(document.querySelectorAll('code'),function(dom,i) {
 			      Prism.highlightElement(dom);
 			    });
+			    var imgDoms = document.querySelectorAll('img');
+			    imgDoms.length>0 && forEach_native.call(imgDoms,(dom,i)=>{
+			    	var src = dom.getAttribute('src');
+			    	dom.setAttribute('src',src.substring(3));
+			    })
 			}
 
 		})
 }
 
 function getData(arg){
-	window.fetch(arg.url).then(data=>data.text()).then(data=>arg.fn&&arg.fn(data)).catch(err=>console.log(`发生错误：${err}`));
+	var key = arg.key,
+		store = window.sessionStorage,
+		data;
+	if(!!(data = store.getItem(key))){
+		arg.fn && arg.fn(data);
+		return;
+	}
+	window.fetch(arg.url).then(data=>data.text()).then(data=>{arg.fn&&arg.fn(data),store.setItem(key,data)}).catch(err=>console.log(`发生错误：${err}`));
 }
 
 window.onpopstate = function(event) {
