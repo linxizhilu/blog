@@ -8,26 +8,67 @@
 	<script src="js/prism.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
+<div id="sidebar">
+
+</div>
+
 <div id="content">
 
 </div>
 </body>
 <script type="text/javascript">
+var ary = [],
+	forEach_native = ary.forEach,
+	map_native = ary.map;
+var sidebarDom = document.querySelector('#sidebar');
+getData({url:'readme.md',
+		data:'',
+		fn:function(data){
+			sidebarDom.innerHTML = marked(data)
+			var navDoms = sidebarDom.querySelectorAll('h5 a');
+			forEach_native.call(navDoms,(dom,i)=>{
+					dom.addEventListener('click',function(){
+					var self = this,
+						title = self.title;
+						console.log(title);
+						history.pushState({t:title},'','index.html?t='+title);
+						updateContent();
+					})
+				})
+			}
+		})
 
-var content = document.querySelector('#content');
-var q = location.search.split('=')[1] || 'symbol';
-	console.log(q);
-	window.fetch('md/'+q+'.md').then(function(data){
-		return data.text();
 
-	},function(err){
-		console.log(err);
-	}).then(function(data){
-		content.innerHTML = marked(data);
-		// 完成代码高亮
-	    ([]).map.call(document.querySelectorAll('code'),function(dom,i) {
-	      Prism.highlightElement(dom);
-	    });
-	})
+
+var contentDom = document.querySelector('#content');
+
+function getPage(){
+	return location.search.split('=')[1] || 'symbol';
+}
+
+updateContent();
+function updateContent(){
+	getData({
+			url:'md/'+getPage()+'.md',
+			data:'',
+			fn:function(data){
+				contentDom.innerHTML = marked(data);
+				// 完成代码高亮
+			    forEach_native.call(document.querySelectorAll('code'),function(dom,i) {
+			      Prism.highlightElement(dom);
+			    });
+			}
+
+		})
+}
+
+function getData(arg){
+	window.fetch(arg.url).then(data=>data.text()).then(data=>arg.fn&&arg.fn(data)).catch(err=>console.log(`发生错误：${err}`));
+}
+
+window.onpopstate = function(event) {
+	updateContent();
+};
+
 </script>
 </html>
