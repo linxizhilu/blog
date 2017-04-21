@@ -4,3 +4,4 @@
 ##### [css加载之link与@import的不同](md/css-different-between-link-and-import.md 'css-different-between-link-and-import')
 ##### [琐碎知识记](md/simple-frontend-knowledges.md 'simple-frontend-knowledges')
 ##### [pm2知识简介](md/pm2-info.md 'pm2-info')
+##### [观察者模式监听数据变化](md/observe-to-listen-model-change.md 'observe-to-listen-model-change')

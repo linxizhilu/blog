@@ -23,7 +23,7 @@ var ary = [],
 var sidebarDom = document.querySelector('#sidebar');
 getData({url:'readme.md',
 		data:'',
-		key:'sidebar',
+		key:'',
 		fn:function(data){
 			sidebarDom.innerHTML = marked(data)
 			var navDoms = sidebarDom.querySelectorAll('h5 a');
@@ -76,10 +76,10 @@ function getData(arg){
 	var key = arg.key,
 		store = window.sessionStorage,
 		data;
-	if(!!(data = store.getItem(key))){
-		arg.fn && arg.fn(data);
-		return;
-	}
+	// if(!!key && !!(data = store.getItem(key))){
+	// 	arg.fn && arg.fn(data);
+	// 	return;
+	// }
 	window.fetch(arg.url).then(data=>data.text()).then(data=>{arg.fn&&arg.fn(data),store.setItem(key,data)}).catch(err=>console.log(`发生错误：${err}`));
 }
 
