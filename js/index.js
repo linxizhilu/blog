@@ -1,26 +1,28 @@
 
-// (function (doc, win) {
-//     var docEl = doc.documentElement,
-//         resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-//         recalc = function () {
-//             var clientWidth = docEl.clientWidth;
-//             if (!clientWidth) return;
-//             if(clientWidth>=640){
-//                 docEl.style.fontSize = '20px';
-//             }else{
-//                 docEl.style.fontSize = 20 * (clientWidth / 640) + 'px';
-//             }
-//         };
-//
-//     if (!doc.addEventListener) return;
-//     win.addEventListener(resizeEvt, recalc, false);
-//     doc.addEventListener('DOMContentLoaded', recalc, false);
-// })(document, window);
+(function (doc, win) {
+    var docEl = doc.documentElement,
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+        recalc = function () {
+            var clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            if(clientWidth>=640){
+                docEl.style.fontSize = '25px';
+            }else{
+                docEl.style.fontSize = 25 * (clientWidth / 640) + 'px';
+            }
+        };
+
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
+})(document, window);
 (function(){
   var ary = ['forEach','map','push']
     ary.forEach((item,i)=>{
       window[item+'_native'] = ary[item];
     })
+    console.log('sdf')
+    document.querySelector('#content').style.minHeight = window.innerHeight+'px';
   var sidebarDom = document.querySelector('#sidebar');
   getData({url:'readme.md',
   		data:'',
@@ -39,7 +41,7 @@
   				})
   			}
   		})
-  var contentDom = document.querySelector('#content');
+  var contentDom = document.querySelector('#detail');
   function getPage(){
   	return location.search.split('=')[1] || 'symbol';
   }
@@ -55,7 +57,9 @@
           classList.add('bounceOutDown');
           contentDom.addEventListener('webkitAnimationEnd',out)
           function out(){
+            console.time();
             updateContet(data);
+            console.timeEnd();
             contentDom.removeEventListener('webkitAnimationEnd',out);
             classList.remove('bounceOutDown');
             classList.add('bounceInUp');

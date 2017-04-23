@@ -46,10 +46,11 @@ const handler = {
 
 const proxy = new Proxy(target, handler);
 
-proxy.foo//hello test
+proxy.foo //hello test
 "test"
 ```
 ## 编写一个方法，再函数内部实现对象赋值，同时触发函数
+(本人猜想react内部原理有可能是这样实现的，暂未查看)
 ```javascript
 let obj={},
 	fn = function(value){
@@ -61,6 +62,6 @@ const setValue = function(key,value){
 	!!fn&&fn(value);
 	return key;
 };
-setValue(obj.data,value)//hello test
+setValue(obj.data,value) //hello test
 "test"
 ```
