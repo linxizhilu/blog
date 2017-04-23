@@ -1,4 +1,4 @@
-<img src="images/linxizhilu.jpg" alt="头像" title="林夕之路" style="max-width:50%;border-radius:5%;box-shadow:5px 5px 5px black;">
+<img src="images/linxizhilu.jpg" alt="头像" title="林夕之路" style="max-width:50%;border-radius:5%;box-shadow:5px 5px 5px black;"/>
 # 林夕之路
 
 #### ↓这是自己用来记录前端生活的后花园
