@@ -1,91 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>test Marked</title>
+	<meta charset="utf-8">
+	<title>林夕之路</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<link rel="stylesheet" type="text/css" href="css/normalize.css">
 	<link rel="stylesheet" type="text/css" href="css/marked.css">
+	<link rel="stylesheet" type="text/css" href="css/animate.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script src="js/marked.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/prism.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
-<div id="sidebar">
-
-</div>
-
-<div id="content" style="transition: opacity 0.5s ease 0s;opacity:1">
-
-</div>
+<div id="sidebar"></div>
+<div id="content" class="animated"></div>
 </body>
-<script type="text/javascript">
-var ary = [],
-	forEach_native = ary.forEach,
-	map_native = ary.map;
-var sidebarDom = document.querySelector('#sidebar');
-getData({url:'readme.md',
-		data:'',
-		key:'',
-		fn:function(data){
-			sidebarDom.innerHTML = marked(data)
-			var navDoms = sidebarDom.querySelectorAll('h5 a');
-			forEach_native.call(navDoms,(dom,i)=>{
-					dom.href = 'javascript:;'
-					dom.addEventListener('click',function(){
-					var self = this,
-						title = self.title;
-						history.pushState({t:title},'','index.html?t='+title);
-						updateContent();
-					})
-				})
-			}
-		})
-
-
-
-var contentDom = document.querySelector('#content');
-
-function getPage(){
-	return location.search.split('=')[1] || 'symbol';
-}
-
-updateContent();
-function updateContent(){
-	var key = getPage();
-	getData({
-			url:'md/'+key+'.md',
-			key:key,
-			data:'',
-			fn:function(data){
-				contentDom.style.opacity=0;
-				contentDom.innerHTML = marked(data);
-				contentDom.style.opacity=1;
-				// 完成代码高亮
-			    forEach_native.call(document.querySelectorAll('code'),function(dom,i) {
-			      Prism.highlightElement(dom);
-			    });
-			    var imgDoms = document.querySelectorAll('img');
-			    imgDoms.length>0 && forEach_native.call(imgDoms,(dom,i)=>{
-			    	var src = dom.getAttribute('src');
-			    	dom.setAttribute('src',src.substring(3));
-			    })
-			}
-
-		})
-}
-
-function getData(arg){
-	var key = arg.key,
-		store = window.sessionStorage,
-		data;
-	// if(!!key && !!(data = store.getItem(key))){
-	// 	arg.fn && arg.fn(data);
-	// 	return;
-	// }
-	window.fetch(arg.url).then(data=>data.text()).then(data=>{arg.fn&&arg.fn(data),store.setItem(key,data)}).catch(err=>console.log(`发生错误：${err}`));
-}
-
-window.onpopstate = function(event) {
-	updateContent();
-};
-
-</script>
+<script type="text/javascript" src="js/index.js" defer></script>
 </html>

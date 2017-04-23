@@ -1,0 +1,17 @@
+#sidebar {
+  overflow: auto;
+  z-index: 1;
+}
+#content {
+  -webkit-animation-duration: 0.9s;
+  -moz-animation-duration: 0.9s;
+  animation-duration: 0.9s;
+  -webkit-animation-delay: 0s;
+  -moz-animation-delay: 0s;
+  animation-delay: 0s;
+  width: auto;
+  margin-right: 20px;
+}
+#content code {
+  font-size: 0.8rem;
+}
