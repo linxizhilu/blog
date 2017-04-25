@@ -31,6 +31,7 @@
   			sidebarDom.innerHTML = marked(data)
   			var navDoms = sidebarDom.querySelectorAll('h5 a');
   			forEach_native.call(navDoms,(dom,i)=>{
+            if(dom.href.indexOf('com')!=-1)return;
   					dom.href = 'javascript:;'
   					dom.addEventListener('click',function(){
   					var self = this,

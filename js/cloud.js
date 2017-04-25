@@ -18,7 +18,7 @@ var windowHalfY = window.innerHeight / 2;
 function init() {
 
 	container = document.createElement( 'div' );
-  container.id="cloud";
+    container.id="cloud";
 	document.body.appendChild( container );
 
 	// Bg gradient
