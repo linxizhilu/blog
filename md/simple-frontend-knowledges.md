@@ -36,6 +36,7 @@ function fn(arg){
 像上面这些纯函数组合起来，就可以构成函数式写法了
 
 ## 对象参数里面的this指向
+
 ```javascript
 function fn(obj){
 	!!obj.fn&&obj.fn()
@@ -45,12 +46,15 @@ fn({fn:function(){console.log(this)}}) 	//Object {}
 ↑ 通过上面测试可以得出，this指向的是该函数参数
 
 ```javascript
+
+```
+```javascript
 function fn(arg){
 	!!arg&&arg()
 }
-fn({function(){console.log(this)}) 	//Window
+fn({function(){console.log(this)}}) 	//Window
 ```
-↑ 通过上面测试可以得出，this指向的是Window
+↑通过上面测试可以得出，this指向的是Window
 
 ## html5语义化优点
 1. 去掉或样式丢失的时候能让页面呈现清晰的结构。
@@ -82,7 +86,8 @@ function bisectionLgorithms(ary,finalVal){
 		}(ary,finalVal));
 }
 var tempAry =[1,5,7,8,9,11,22,55];
-bisectionLgorithms(tempAry,5) // Object {value: 5, count: 3}
+bisectionLgorithms(tempAry,5)  // Object {value: 5, count: 3}
+
 ```
 ## post与get请求的区别
 1. 从语义上来说，`get`是拿数据，`post`是提交数据。
@@ -146,3 +151,10 @@ bisectionLgorithms(tempAry,5) // Object {value: 5, count: 3}
 这个最后的版本开销最小，最适合于应用生命周期中的高压力点，例如动画或滚动。
 
 性能是一种避免执行工作的艺术，并且使您执行的任何操作尽可能高效。 许多情况下，这需要与浏览器配合，而不是跟它对着干。 值得谨记的是，上面列出的各项管道工作在计算开销上有所不同；一些任务比其他任务的开销要大！
+
+## script标签的async和defer属性记
+一般情况下，html在渲染的时候一旦遇到`<script><link>`标签就会停止渲染，然后进行文件加载，文件加载返回结果之后才会继续渲染。现在说script标签的async和defer属性。
+> async是异步加载，浏览器一遍加载文件，一遍继续渲染，文件加载完毕就会进行编译执行，从而继续阻塞浏览器页面渲染。
+> defer 属性也是异步加载，与async不同的是，它在加载完成之后不会执行，只在页面渲染完毕，DOMContentLoaded之前执行。
+
+<img src="../images/script-defer-async.jpg" style="max-width:100%;width: 100%;"/>

@@ -6,7 +6,7 @@
 
 ##### [JS的优化](md/optimizing-javscript-exection.md 'optimizing-javscript-exection')
 ##### [网页的渲染过程](md/course-about-html-to-render.md 'course-about-html-to-render')
-##### [琐碎知识记](md/simple-frontend-knowledges.md 'simple-frontend-knowledges')
+##### [前端琐碎知识记](md/simple-frontend-knowledges.md 'simple-frontend-knowledges')
 ##### [工作中积累的知识点](md/mix-info.md 'mix-info')
 ##### [观察者模式监听数据变化](md/observe-to-listen-model-change.md 'observe-to-listen-model-change')
 ##### [pm2知识简介](md/pm2-info.md 'pm2-info')
