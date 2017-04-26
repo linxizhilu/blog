@@ -22,6 +22,9 @@
 #content code {
   font-size: 0.8rem;
 }
+#content img {
+  margin: 20px auto;
+}
 #cloud {
   position: fixed;
   z-index: -1;
