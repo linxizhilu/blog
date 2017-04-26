@@ -4,6 +4,9 @@
   overflow: auto;
   z-index: 2;
 }
+#sidebar h5 a {
+  vertical-align: top;
+}
 #content {
   min-height: 100%;
   opacity: 1;
