@@ -30,6 +30,22 @@
   z-index: -1;
   top: 0;
 }
+#backTop {
+  height: 30px;
+  width: 30px;
+  line-height: 30px;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: lightblue;
+  font-weight: bold;
+  color: white;
+  padding: 5px;
+  box-shadow: 2px 2px 5px black;
+  text-align: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
 @media (min-width: 40rem) {
   #sidebar {
     background-color: transparent;
