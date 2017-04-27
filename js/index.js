@@ -60,6 +60,7 @@
           function out(){
             console.time();
             updateContet(data);
+            window.scrollTo(0,0);
             console.timeEnd();
             contentDom.removeEventListener('webkitAnimationEnd',out);
             classList.remove('bounceOutDown');
