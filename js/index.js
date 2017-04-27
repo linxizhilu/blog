@@ -60,7 +60,9 @@
           function out(){
             console.time();
             updateContet(data);
-            window.scrollTo(0,0);
+            if(window.innerWidth >640){
+              window.scrollTo(0,0);
+            }
             console.timeEnd();
             contentDom.removeEventListener('webkitAnimationEnd',out);
             classList.remove('bounceOutDown');

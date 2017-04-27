@@ -38,12 +38,36 @@ function fn(arg){
 ## 对象参数里面的this指向
 
 ```javascript
+var obj = {
+			a:'a',
+			b:this.a, //这里的this也是指向window
+			fn:function(){console.log(this)}, //这里的this指向的是obj本身
+			win:function(){console.log(this)}()//这里面的this指向为window
+		};
+obj.b; //underfinded
+obj.fn; //obj
 function fn(obj){
 	!!obj.fn&&obj.fn()
 }
-fn({fn:function(){console.log(this)}}) 	//Object {}
+fn(obj) 	//obj {}
 ```
-↑ 通过上面测试可以得出，this指向的是该函数参数
+```javascript
+function foo(){
+	console.log(this.a);
+}
+var obj = {
+	a:'a',
+	foo:foo
+}
+var a = 'window.a';
+foo(); //window.a
+obj.foo(); //a
+(function(a){a()}(obj.foo)); //window.a
+(function(a){a.foo()}(obj)); //a
+```
+** JS属于按引用求值 **
+
+↑ 通过上面测试可以得出，this当真是变幻莫测
 
 ```javascript
 
