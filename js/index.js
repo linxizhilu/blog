@@ -32,7 +32,7 @@
   			sidebarDom.innerHTML = marked(data)
   			var navDoms = sidebarDom.querySelectorAll('h5 a');
   			forEach_native.call(navDoms,(dom,i)=>{
-            if(dom.href.indexOf('com')!=-1)return;
+            if(dom.href.indexOf('.com')!=-1)return;
   					dom.href = 'javascript:;'
   					dom.addEventListener('click',function(){
   					var self = this,
@@ -161,7 +161,7 @@
     tempStep = step,
     num = 10,
     flag = diff > 0 ? true : false,
-    $win = document.body,
+    $win = window.netscape ? document.documentElement : document.body ,
     curScrollTop,
     count = 0,
     lastScrollTop;

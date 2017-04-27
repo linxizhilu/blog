@@ -4,7 +4,7 @@
   if(window.innerWidth>768 && Detector.webgl){
     init();
   }
-}());
+
 
 var container;
 var camera, scene, renderer;
@@ -131,3 +131,4 @@ function animate() {
 	renderer.render( scene, camera );
 
 }
+}());
