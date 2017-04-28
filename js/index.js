@@ -32,7 +32,7 @@
   			sidebarDom.innerHTML = marked(data)
   			var navDoms = sidebarDom.querySelectorAll('h5 a');
   			forEach_native.call(navDoms,(dom,i)=>{
-            if(dom.href.indexOf('com')!=-1)return;
+            if(dom.href.indexOf('github.com')!=-1)return;
   					dom.href = 'javascript:;'
   					dom.addEventListener('click',function(){
   					var self = this,
@@ -60,6 +60,7 @@
           function out(){
             console.time();
             updateContet(data);
+            window.scrollTo(0,0)
             console.timeEnd();
             contentDom.removeEventListener('webkitAnimationEnd',out);
             classList.remove('bounceOutDown');
@@ -112,7 +113,7 @@
   	updateContent();
   };
   backTopDom.addEventListener('click',function(){
-    moveToMiddle('#titleNav',0);
+    moveToMiddle('#detail',0);
   })
 
   function getData(arg){
