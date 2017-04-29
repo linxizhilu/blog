@@ -20,29 +20,32 @@
   var ary = ['forEach','map','push']
     ary.forEach((item,i)=>{
       window[item+'_native'] = ary[item];
-    })
+    }),
+    gitHubUrl = 'https://github.com/linxizhilu/blog/edit/master/';
     document.querySelector('#content').style.minHeight = window.innerHeight+'px';
   var sidebarDom = document.querySelector('#sidebar'),
       contentDom = document.querySelector('#detail'),
       backTopDom = document.querySelector('#backTop');
   getData({url:'readme.md',
-  		data:'',
-  		key:'',
-  		fn:function(data){
-  			sidebarDom.innerHTML = marked(data)
-  			var navDoms = sidebarDom.querySelectorAll('h5 a');
-  			forEach_native.call(navDoms,(dom,i)=>{
-            if(dom.href.indexOf('github.com')!=-1)return;
-  					dom.href = 'javascript:;'
-  					dom.addEventListener('click',function(){
-  					var self = this,
-  						title = self.title;
-  						history.pushState({t:title},'','index.html?t='+title);
-  						updateContent();
-  					})
-  				})
-  			}
-  		})
+      		data:'',
+      		key:''})
+  .then((data)=>{
+    console.log(data);
+    sidebarDom.innerHTML = marked(data)
+    var navDoms = sidebarDom.querySelectorAll('h5 a');
+    forEach_native.call(navDoms,(dom,i)=>{
+        if(dom.href.indexOf('github.com')!=-1)return;
+        dom.href = 'javascript:;'
+        dom.addEventListener('click',function(){
+        var self = this,
+          title = self.title;
+          history.pushState({t:title},'','index.html?t='+title);
+          updateContent();
+        })
+      })
+    })
+    .catch(err=>console.error(err))
+
   function getPage(){
   	return location.search.split('=')[1] || 'symbol';
   }
@@ -52,28 +55,42 @@
   	getData({
   			url:'md/'+key+'.md',
   			key:key,
-  			data:'',
-  			fn:function(data){
-          var classList = contentDom.classList;
-          classList.add('bounceOutDown');
-          contentDom.addEventListener('webkitAnimationEnd',out)
-          function out(){
-            console.time();
-            updateContet(data);
-            if(window.innerWidth >640){
-              window.scrollTo(0,0);
-            }
-            console.timeEnd();
-            contentDom.removeEventListener('webkitAnimationEnd',out);
-            classList.remove('bounceOutDown');
-            classList.add('bounceInUp');
-          }
-  			}
+  			data:''
+		})
+    .then((data)=>{
+      // console.log(data);
+      var classList = contentDom.classList,
+          preFix = 'webkit',
+          flag = true,
+          timer;
+      classList.add('bounceOutDown');
+      if(utils.firefox){
+        preFix = 'moz'
+      }
+      timer = setTimeout(function(){
+        out();
+      },500)
+      contentDom.addEventListener(preFix+'AnimationEnd',out)
+      function out(){
+        if(!flag)return;
+        flag = false;
+        clearTimeout(timer);
 
-  		})
+        console.time();
+        updateDetail(data);
+        if(window.innerWidth >640){
+          window.scrollTo(0,0);
+        }
+        console.timeEnd();
+        contentDom.removeEventListener(preFix+'AnimationEnd',out);
+        classList.remove('bounceOutDown');
+        classList.add('bounceInUp');
+      }
+    })
+    .catch(err=>console.error(err))
   }
   // 更新内容
-  function updateContet(data){
+  function updateDetail(data){
       contentDom.innerHTML = marked(data);
       // 完成代码高亮
       forEach_native.call(document.querySelectorAll('code'),function(dom,i) {
@@ -101,7 +118,12 @@
     var div = document.createElement('div');
     div.id = "titleNav";
     div.innerHTML = html;
-    contentDom.querySelector('h1').insertAdjacentElement('afterend',div);
+    var h1Dom = contentDom.querySelector('h1');
+    if(h1Dom.inserAdjacentElement){
+      h1Dom.insertAdjacentElement('afterend',div);
+    }else{
+      contentDom.insertBefore(div,h1Dom.nextSibling);
+    }
     forEach_native.call(contentDom.querySelectorAll('#titleNav li a'),(navDom,index)=>{
       navDom.addEventListener('click',function(e){
         var self = this,
@@ -119,14 +141,32 @@
   })
 
   function getData(arg){
-    var key = arg.key,
-    store = window.sessionStorage,
-    data;
-    // if(!!key && !!(data = store.getItem(key))){
-    // 	arg.fn && arg.fn(data);
-    // 	return;
-    // }
-    window.fetch(arg.url).then(data=>data.text()).then(data=>{arg.fn&&arg.fn(data),store.setItem(key,data)}).catch(err=>console.log(`error:${err}`));
+    return  new Promise((resolve,reject)=>{
+      var ary = arg,
+      key = arg.key,
+      store = window.sessionStorage,
+      data;
+      // if(!!key && !!(data = store.getItem(key))){
+      // 	arg.fn && arg.fn(data);
+      // 	return;
+      // }
+
+      window.fetch(arg.url,{
+        mode:'no-cors'
+      })
+      .then(data=>data.text())
+      .then(data=>{
+        store.setItem(key,data)
+        resolve(data);
+        // !!arg.fn&&arg.fn(data),
+        })
+      .catch(err=>{
+        console.log(`error:${err}`)
+        reject(err);
+      });
+
+    })
+
   }
   // 将一个dom移动到页面中间或者上方
   function moveToMiddle(elem, height, fn, pos) {
@@ -164,7 +204,7 @@
     tempStep = step,
     num = 10,
     flag = diff > 0 ? true : false,
-    $win = window.netscape ? document.documentElement : document.body ,
+    $win = utils.firefox ? document.documentElement : document.body ,
     curScrollTop,
     count = 0,
     lastScrollTop;
@@ -176,8 +216,8 @@
       }
       count++;
       if(count > 1000){
-        return;
         console.log('error');
+        return;
       };
       lastScrollTop = curScrollTop;
       if (flag) {

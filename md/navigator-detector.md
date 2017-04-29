@@ -20,10 +20,7 @@ ie11 = !!window.MSInputMethodContext;
 ```
 ## FireFox
 ```javascript
-firefox=!!window.netscape;
-firefox=!!window.updateCommands;
-safari=window.openDatabase&&!window.chrome;
-chrome=!!(window.chrome&&window.google);
+firefox=!!window.netscape || !!window.updateCommands;
 ```
 ## safari
 ```javascript
@@ -31,7 +28,7 @@ safari=window.openDatabase&&!window.chrome;
 ```
 ## chorme
 ```javascript
-chrome=!!(window.chrome&&window.google);
+chrome=!!(window.chrome);
 ```
 
 ## 移动设备篇
