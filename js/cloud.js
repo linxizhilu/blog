@@ -1,7 +1,7 @@
 
 
 (function(){
-  if(window.innerWidth>768 && Detector.webgl){
+  if(window.innerWidth>640 && Detector.webgl){
     init();
   }
 

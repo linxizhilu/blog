@@ -1,0 +1,63 @@
+ul {
+  position: relative;
+}
+ul .img {
+  display: inline-block;
+  height: 200px;
+  width: 200px;
+  background: transparent;
+  /*transform:rotateZ(-38deg) skewX(22.8deg) skewY(10.4deg);*/
+  -webkit-transform: rotateZ(-45deg);
+  -moz-transform: rotateZ(-45deg);
+  -ms-transform: rotateZ(-45deg);
+  transform: rotateZ(-45deg);
+  overflow: hidden;
+  position: absolute;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  transition: all 0.5s;
+  top: 0;
+  left: 0;
+}
+ul .img .wrap {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  -webkit-transform: rotateZ(45deg);
+  -moz-transform: rotateZ(45deg);
+  -ms-transform: rotateZ(45deg);
+  transform: rotateZ(45deg);
+  position: relative;
+  vertical-align: middle;
+}
+ul .img .wrap .navInfo {
+  position: absolute;
+  width: 160px;
+  height: 120px;
+  top: -300px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  opacity: 0;
+  transition: all 0.5s ease-in-out 0s;
+  padding: 80px 20px 0 20px;
+}
+ul .img .wrap:hover .navInfo {
+  opacity: 1;
+  top: 0;
+}
+ul .img .wrap1 {
+  display: block;
+}
+ul .img .responsive {
+  max-width: 100%;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  transition: all 0.5s;
+}

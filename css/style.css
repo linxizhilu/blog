@@ -4,11 +4,30 @@
   overflow: auto;
   z-index: 2;
 }
-#sidebar h5 a {
+#sidebar p img {
+  cursor: pointer;
+}
+#sidebar h2 a {
   vertical-align: top;
 }
+#sidebar ul {
+  padding-left: 0;
+}
+#sidebar ul li {
+  margin-top: 0.3rem;
+  margin-left: 0px;
+  padding-left: 10px;
+}
+#sidebar ul li:hover a {
+  color: #2d4d0c;
+  margin-left: 2px;
+  cursor: pointer;
+}
+#sidebar ul li::before {
+  content: '';
+}
 #content {
-  min-height: 100%;
+  box-sizing: border-box;
   opacity: 1;
   background-color: rgba(255, 255, 255, 0.7);
   -webkit-animation-duration: 0.9s;
@@ -49,11 +68,66 @@
   border-radius: 50%;
   cursor: pointer;
 }
+#mask {
+  position: fixed;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  display: none;
+}
+#ul {
+  position: fixed;
+  background: transparent;
+  margin: 0px;
+  margin-left: 330px;
+  opacity: 1;
+  transition: opacity 0.5s ease 0s;
+}
+.hidden {
+  overflow: hidden;
+}
+.blur {
+  -webkit-filter: blur(2px);
+}
 @media (min-width: 40rem) {
   #sidebar {
     background-color: transparent;
   }
   #content {
     padding-left: 330px;
+  }
+}
+@media (max-width: 40rem) {
+  #sidebar h3 {
+    cursor: pointer;
+  }
+  #sidebar h3::after {
+    content: '点我←';
+    margin-left: 10px;
+  }
+  #sidebar ul {
+    position: fixed;
+    top: 0px;
+    left: 1000px;
+    bottom: 0px;
+    right: 0px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.8);
+    vertical-align: middle;
+    transition: left 0.5s ease-in-out 0s;
+    z-index: 10;
+  }
+  #sidebar ul li {
+    margin: 1rem 0;
+    font-weight: bold;
+  }
+  #sidebar ul li a:link {
+    font-size: 20px;
+    color: #fff;
   }
 }

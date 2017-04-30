@@ -1,0 +1,64 @@
+// out: showImg.css, sourcemap: false, compress: false
+.pre (@style, @value) {
+	-webkit-@{style}: @value;
+	-moz-@{style}: @value;
+	-ms-@{style}: @value;
+	@{style}: @value;
+}
+ul{
+    position: relative;
+    .img{
+        display: inline-block;
+        height: 200px;
+        width: 200px;
+        background: transparent;
+        /*transform:rotateZ(-38deg) skewX(22.8deg) skewY(10.4deg);*/
+        // transform:rotateZ(-45deg);
+        .pre(transform,rotateZ(-45deg));
+        overflow: hidden;
+        position: absolute;
+        transition: all 0.5s;
+        .pre(transition,all 0.5s);
+        top:0;
+        left:0;
+        .wrap{
+            display: inline-block;
+            height: 100%;
+            width: 100%;
+				    overflow: hidden;
+            // transform: rotateZ(45deg);
+            .pre(transform,rotateZ(45deg));
+						position: relative;
+						vertical-align: middle;
+						.navInfo{
+							position: absolute;
+							width: 160px;
+							height: 120px;
+					    top: -300px;
+					    bottom: 0;
+					    left: 0;
+					    right: 0;
+					    text-align: center;
+					    // line-height: 200px;
+					    background: rgba(0,0,0,.5);
+					    color: white;
+							opacity: 0;
+							transition: all 0.5s ease-in-out 0s;
+							padding: 80px 20px 0 20px;
+						}
+						&:hover{
+							.navInfo{
+								opacity: 1;
+								top: 0;
+							}
+						}
+        }
+        .wrap1{
+            display: block;
+        }
+        .responsive{
+            max-width: 100%;
+            .pre(transition,all 0.5s);
+        }
+    }
+}

@@ -1,57 +1,102 @@
 
-(function (doc, win) {
-    var docEl = doc.documentElement,
-        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-        recalc = function () {
-            var clientWidth = docEl.clientWidth;
-            if (!clientWidth) return;
-            if(clientWidth>=640){
-                docEl.style.fontSize = '25px';
-            }else{
-                docEl.style.fontSize = 25 * (clientWidth / 640) + 'px';
-            }
-        };
-
-    if (!doc.addEventListener) return;
-    win.addEventListener(resizeEvt, recalc, false);
-    doc.addEventListener('DOMContentLoaded', recalc, false);
-})(document, window);
+// (function (doc, win) {
+//     var docEl = doc.documentElement,
+//         resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+//         recalc = function () {
+//             var clientWidth = docEl.clientWidth;
+//             if (!clientWidth) return;
+//             if(clientWidth>=640){
+//                 docEl.style.fontSize = '25px';
+//             }else{
+//                 docEl.style.fontSize = 25 * (clientWidth / 640) + 'px';
+//             }
+//         };
+//
+//     if (!doc.addEventListener) return;
+//     win.addEventListener(resizeEvt, recalc, false);
+//     doc.addEventListener('DOMContentLoaded', recalc, false);
+// })(document, window);
 (function(){
   var ary = ['forEach','map','push']
-    ary.forEach((item,i)=>{
-      window[item+'_native'] = ary[item];
-    }),
-    gitHubUrl = 'https://github.com/linxizhilu/blog/edit/master/';
-    document.querySelector('#content').style.minHeight = window.innerHeight+'px';
-  var sidebarDom = document.querySelector('#sidebar'),
+      ary.forEach((item,i)=>{
+        window[item+'_native'] = ary[item];
+      }),
+      publicNet = (location.hostname === 'linxizhilu.com');
+      document.querySelector('#content').style.minHeight = window.innerHeight+'px',
+      sidebarDom = document.querySelector('#sidebar'),
       contentDom = document.querySelector('#detail'),
-      backTopDom = document.querySelector('#backTop');
+      backTopDom = document.querySelector('#backTop'),
+      preFix = utils.firefox ? 'moz':'webkit';
   getData({url:'readme.md',
       		data:'',
       		key:''})
   .then((data)=>{
-    console.log(data);
     sidebarDom.innerHTML = marked(data)
-    var navDoms = sidebarDom.querySelectorAll('h5 a');
-    forEach_native.call(navDoms,(dom,i)=>{
-        if(dom.href.indexOf('github.com')!=-1)return;
-        dom.href = 'javascript:;'
-        dom.addEventListener('click',function(){
-        var self = this,
-          title = self.title;
-          history.pushState({t:title},'','index.html?t='+title);
-          updateContent();
-        })
+    var navDoms = sidebarDom.querySelectorAll('ul a'),
+        h3Doms = sidebarDom.querySelector('h3'),
+        bodyDom = document.querySelector('body'),
+        ulDom = sidebarDom.querySelector('ul'),
+        logoDom = sidebarDom.querySelector('img');
+    navAction(navDoms);
+    utils.addEvent(h3Doms,'click',function(){
+      if(window.innerWidth<640){
+        ulDom.style.left = 0;
+        // bodyDom.classList.add('hidden');
+        contentDom.classList.add('blur');
+      }
+
+    })
+    utils.addEvent(ulDom,'click',function(){
+      if(window.innerWidth<640){
+        ulDom.style.left = '1000px';
+        // bodyDom.classList.remove('hidden');
+        contentDom.classList.remove('blur');
+      }
+    })
+    utils.addEvent(logoDom,'click',function(){
+      history.pushState({},'','index.html');
+      contentDom.classList.add('bounceOutDown');
+      contentDom.addEventListener(preFix+'AnimationEnd',function(){
+        if(!getPage()){
+          contentDom.innerHTML = '';
+          pubu(navDoms.length);
+          navAction(document.querySelectorAll('#ul a'));
+          document.querySelector('#ul').style.opacity=1;
+        }
+      });
+    })
+    if(!getPage()){
+      pubu(navDoms.length);
+      navAction(document.querySelectorAll('#ul a'));
+    }else{
+      updateContent();
+    }
+  })
+  .catch(err=>console.error(err));
+
+  // 添加导航跳转操作
+  function navAction(doms){
+    forEach_native.call(doms,(dom,i)=>{
+      if(dom.href.indexOf('github.com')!=-1)return;
+      dom.href = 'javascript:;'
+      dom.addEventListener('click',function(){
+      var self = this,
+        title = self.title;
+        history.pushState({t:title},'','index.html?t='+title);
+        updateContent();
+        document.querySelector('#ul').style.opacity=0;
       })
     })
-    .catch(err=>console.error(err))
-
-  function getPage(){
-  	return location.search.split('=')[1] || 'symbol';
   }
-  updateContent();
+  // 获取当前的query值
+  function getPage(){
+  	return location.search.split('=')[1] || '';
+  }
+
+  // 更新当前的文档信息，拿取数据
   function updateContent(){
   	var key = getPage();
+    if(!key){return};
   	getData({
   			url:'md/'+key+'.md',
   			key:key,
@@ -60,13 +105,9 @@
     .then((data)=>{
       // console.log(data);
       var classList = contentDom.classList,
-          preFix = 'webkit',
           flag = true,
           timer;
       classList.add('bounceOutDown');
-      if(utils.firefox){
-        preFix = 'moz'
-      }
       timer = setTimeout(function(){
         out();
       },500)
@@ -75,7 +116,6 @@
         if(!flag)return;
         flag = false;
         clearTimeout(timer);
-
         console.time();
         updateDetail(data);
         if(window.innerWidth >640){
@@ -89,7 +129,8 @@
     })
     .catch(err=>console.error(err))
   }
-  // 更新内容
+
+  // 更新内容数据
   function updateDetail(data){
       contentDom.innerHTML = marked(data);
       // 完成代码高亮
@@ -107,6 +148,7 @@
       dom.setAttribute('src',src.substring(3));
     })
   }
+  // 修改文档内的h2标签ID，用来做锚点
   function updateTitelId(dom){
     var h2Doms = dom.querySelectorAll('h2'),html='<ul>';
 
@@ -136,21 +178,21 @@
   window.onpopstate = function(event) {
   	updateContent();
   };
+  // 添加回到顶部操作
   backTopDom.addEventListener('click',function(){
     moveToMiddle('#detail',0);
   })
-
+  // 获取数据公用方法
   function getData(arg){
     return  new Promise((resolve,reject)=>{
       var ary = arg,
       key = arg.key,
       store = window.sessionStorage,
       data;
-      // if(!!key && !!(data = store.getItem(key))){
-      // 	arg.fn && arg.fn(data);
-      // 	return;
-      // }
-
+      if(publicNet && !!key && !!(data = store.getItem(key))){
+      	arg.fn && arg.fn(data);
+      	return;
+      }
       window.fetch(arg.url,{
         mode:'no-cors'
       })
@@ -186,8 +228,56 @@
     }
     diffTop = btnCurOftTop - posObj[pos];
     setTimeout(function() {
-      animate1(diffTop, fn);
+      tempAnimate(diffTop, fn);
     }, 200)
+    function tempAnimate(diff, fn, step) {
+      var diff = diff || 0,
+      step = step || 3,
+      tempStep = step,
+      num = 10,
+      flag = diff > 0 ? true : false,
+      $win = utils.firefox ? document.documentElement : document.body ,
+      curScrollTop,
+      count = 0,
+      lastScrollTop;
+      (function move() {
+        curScrollTop = $win.scrollTop;
+        if (curScrollTop === lastScrollTop) {
+          !!fn && fn();
+          return;
+        }
+        count++;
+        if(count > 1000){
+          console.log('error');
+          return;
+        };
+        lastScrollTop = curScrollTop;
+        if (flag) {
+          if (diff > num / 2) {
+            tempStep = -diff / num;
+            diff += tempStep;
+            animationFrame(move);
+          } else {
+            tempStep = diff;
+            diff -= tempStep;
+            !!fn && fn();
+          }
+
+        } else {
+          if (diff < -num / 2) {
+            tempStep = -diff / num;
+            diff += tempStep;
+            $win.scrollTop = curScrollTop - tempStep;
+            animationFrame(move);
+          } else {
+            tempStep = -diff;
+            diff += tempStep;
+            !!fn && fn();
+          }
+        }
+        $win.scrollTop = curScrollTop - tempStep;
+      })()
+    }
   }
   var animationFrame =  (function(window){
     return window.requestAnimationFrame ||    //IE10以及以上版本，以及最新谷歌，火狐版本
@@ -198,52 +288,5 @@
     }
   })(window);
   // 运动函数
-  function animate1(diff, fn, step) {
-    var diff = diff || 0,
-    step = step || 3,
-    tempStep = step,
-    num = 10,
-    flag = diff > 0 ? true : false,
-    $win = utils.firefox ? document.documentElement : document.body ,
-    curScrollTop,
-    count = 0,
-    lastScrollTop;
-    (function move() {
-      curScrollTop = $win.scrollTop;
-      if (curScrollTop === lastScrollTop) {
-        !!fn && fn();
-        return;
-      }
-      count++;
-      if(count > 1000){
-        console.log('error');
-        return;
-      };
-      lastScrollTop = curScrollTop;
-      if (flag) {
-        if (diff > num / 2) {
-          tempStep = -diff / num;
-          diff += tempStep;
-          animationFrame(move);
-        } else {
-          tempStep = diff;
-          diff -= tempStep;
-          !!fn && fn();
-        }
 
-      } else {
-        if (diff < -num / 2) {
-          tempStep = -diff / num;
-          diff += tempStep;
-          $win.scrollTop = curScrollTop - tempStep;
-          animationFrame(move);
-        } else {
-          tempStep = -diff;
-          diff += tempStep;
-          !!fn && fn();
-        }
-      }
-      $win.scrollTop = curScrollTop - tempStep;
-    })()
-  }
 })()
