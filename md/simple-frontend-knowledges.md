@@ -182,3 +182,9 @@ bisectionLgorithms(tempAry,5)  // Object {value: 5, count: 3}
 > defer 属性也是异步加载，与async不同的是，它在加载完成之后不会执行，只在页面渲染完毕，DOMContentLoaded之前执行。
 
 <img src="../images/script-defer-async.jpg" style="max-width:100%;width: 100%;"/>
+
+## css去除html结构中空白字符的方法
+1. 对需要去除空白的节点父集添加`font-size:0`的样式，然后当前节点，在添加各自的`font-size:12px`将父节点样式冲突掉。
+2. 对当前节点添加`margin-left:-4px`的样式，将空白字符抵消。
+3. 删除节点之间的空白字符。
+4. 使用注释（没用过）。
