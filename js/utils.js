@@ -121,8 +121,33 @@
     document.body.appendChild(span);
     return mouse;
   }
+var nav = navigator
+    , ua = nav.userAgent
+    , iPad = ua.match(/(iPad).*OS\s([\d_]+)/)
+    , iPod = ua.match(/(iPod).*OS\s([\d_]+)/i)
+    , namespace = ''
+    , hasTouch = !!ua.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)//('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch
+    , rEmail = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/
+    , rMobile = /^(1[3-9]{1}[0-9]{1})\d{8}$/
 
 var extendObj = {
+    namespace         : namespace,
+    nav               : nav,
+    ua                : ua,
+    webKit            : ua.match(/WebKit\/([\d.]+)/),
+    android           : ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1,//ua.indexOf('Android')!=-1 || ua.indexOf('Mozilla/5.0') > -1 && ua.indexOf('AppleWebKit') > -1 && ua.indexOf('Chrome') >= -1//ua.match(/(Android)\s+([\d.]+)/)
+    iPad              : iPad,
+    iPod              : iPod,
+    iPhone            : !iPod && !iPad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+    hasTouch          : hasTouch,
+    // 常用事件
+    mouseenter        : hasTouch ? 'touchend' + namespace + ' touchcancel' + namespace    : 'mouseenter' + namespace,
+    mouseleave        : hasTouch ? 'touchend' + namespace + ' touchcancel' + namespace    : 'mouseleave' + namespace,
+    mousedown         : hasTouch ? 'touchstart' + namespace   : 'mousedown' + namespace,
+    mouseup           : hasTouch ? 'touchend' + namespace  + ' touchcancel' + namespace   : 'mouseup' + namespace,
+    mousemove         : hasTouch ? 'touchmove' + namespace    : 'mousemove' + namespace,
+    click             : hasTouch ? 'touchend' + namespace  + ' touchcancel' + namespace   : 'click' + namespace,
+    // 拷贝
     extend : function(boolean, target, obj) {
       var key,
         length,
@@ -575,7 +600,78 @@ var extendObj = {
     iphone4:window.devicePixelRatio>=2,
     ipad:/iPad/i.test(navigator.userAgent),
     Android:/android/i.test(navigator.userAgent),
-    iOS:window.devicePixelRatio>=2 || /iPad/i.test(navigator.userAgent)
+    iOS:window.devicePixelRatio>=2 || /iPad/i.test(navigator.userAgent),
+    //延迟执行
+    debounce : function(func, wait, immediate) {
+      var timeout, args, context, timestamp, result;
+
+      var later = function() {
+      var last = Date.now() - timestamp;
+
+      if (last < wait && last >= 0) {
+          timeout = setTimeout(later, wait - last);
+      } else {
+          timeout = null;
+          if (!immediate) {
+              result = func.apply(context, args);
+              if (!timeout) context = args = null;
+          }
+      }
+      };
+      return function() {
+          context = this;
+          args = arguments;
+          timestamp = Date.now();
+          var callNow = immediate && !timeout;
+          if (!timeout) timeout = setTimeout(later, wait);
+          if (callNow) {
+              result = func.apply(context, args);
+              context = args = null;
+          }
+
+          return result;
+      };
+    },
+    throttle : function(func, wait, options) {
+      var context, args, result;
+      var timeout = null;
+      var previous = 0;
+      if (!options) options = {};
+      var later = function() {
+          previous = options.leading === false ? 0 : Date.now();
+          timeout = null;
+          result = func.apply(context, args);
+          if (!timeout) context = args = null;
+      };
+      return function() {
+          var now = Date.now();
+          if (!previous && options.leading === false) previous = now;
+          var remaining = wait - (now - previous);
+          context = this;
+          args = arguments;
+          if (remaining <= 0 || remaining > wait) {
+              if (timeout) {
+              clearTimeout(timeout);
+              timeout = null;
+              }
+              previous = now;
+              result = func.apply(context, args);
+              if (!timeout) context = args = null;
+          } else if (!timeout && options.trailing !== false) {
+              timeout = setTimeout(later, remaining);
+          }
+          return result;
+      }
+    },
+    queryDom:function(selector, elem,boolean) {
+        if (arguments.length === 0) {
+            return document;
+        }
+        var type,
+            _elem = ((type = typeof elem) === 'undefined' || (elem.nodeType && elem.nodeType) === 9) ? document : type === 'string' ? document.querySelector(elem) : type === 'object' && elem.nodeType && elem.nodeType === 1 ? elem : document,
+            _dom = (type = typeof selector) === 'string' ? boolean ?_elem.querySelectorAll(selector) :_elem.querySelector(selector) : type === 'object' && selector.nodeType && selector.nodeType === 1 ? selector : _elem;
+        return _dom;
+    }
   }
   luq_Utils.prototype = extendObj.extend(true, luq_Utils.prototype,extendObj);
  return new luq_Utils();

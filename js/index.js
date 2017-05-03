@@ -54,16 +54,18 @@
       }
     })
     utils.addEvent(logoDom,'click',function(){
-      history.pushState({},'','index.html');
-      contentDom.classList.add('bounceOutDown');
-      contentDom.addEventListener(preFix+'AnimationEnd',function(){
-        if(!getPage()){
-          contentDom.innerHTML = '';
-          pubu(navDoms.length);
-          navAction(document.querySelectorAll('#ul a'));
-          document.querySelector('#ul').style.opacity=1;
-        }
-      });
+      if(window.innerWidth > 640){
+        history.pushState({},'','index.html');
+        contentDom.classList.add('bounceOutDown');
+        contentDom.addEventListener(preFix+'AnimationEnd',function(){
+          if(!getPage()){
+            contentDom.innerHTML = '';
+            pubu(navDoms.length);
+            navAction(document.querySelectorAll('#ul a'));
+            document.querySelector('#ul').style.opacity=1;
+          }
+        });
+      }
     })
     if(!getPage()){
       pubu(navDoms.length);
@@ -90,7 +92,7 @@
   }
   // 获取当前的query值
   function getPage(){
-  	return location.search.split('=')[1] || '';
+  	return location.search.split('=')[1] || (window.innerWidth > 640 ? '':'symbol');
   }
 
   // 更新当前的文档信息，拿取数据
