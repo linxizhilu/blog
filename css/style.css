@@ -77,13 +77,20 @@
   top: 0px;
   display: none;
 }
+#pubu {
+  perspective: 200px;
+  perspective-origin: 50% 50%;
+}
 #ul {
-  position: fixed;
+  position: absolute;
   background: transparent;
   margin: 0px;
+  margin-top: 50px;
   margin-left: 330px;
+  margin-right: 30px;
   opacity: 1;
   transition: opacity 0.5s ease 0s;
+  transform-style: preserve-3d;
 }
 .hidden {
   overflow: hidden;
@@ -129,5 +136,8 @@
   #sidebar ul li a:link {
     font-size: 20px;
     color: #fff;
+  }
+  #ul {
+    margin-left: 0;
   }
 }

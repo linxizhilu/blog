@@ -32,8 +32,11 @@ function init() {
 	var context = canvas.getContext( '2d' );
 
 	var gradient = context.createLinearGradient( 0, 0, 0, canvas.height );
-	gradient.addColorStop(0, "#1e4877");
-	gradient.addColorStop(0.5, "#4584b4");
+    // gradient.addColorStop(0, "#1e4877");
+	// gradient.addColorStop(0.5, "#4584b4");
+    gradient.addColorStop(0.5, "#b2b2aa");
+    gradient.addColorStop(0, "#000000");
+
 
 	context.fillStyle = gradient;
 	context.fillRect(0, 0, canvas.width, canvas.height);
@@ -58,7 +61,9 @@ function init() {
 	texture.magFilter = THREE.LinearMipMapLinearFilter;
 	texture.minFilter = THREE.LinearMipMapLinearFilter;
 
-    var fog = new THREE.Fog( 0x4584b4, - 100, 3000 );
+    // var fog = new THREE.Fog( 0x4584b4, - 100, 3000 );
+    var fog = new THREE.Fog( 0x000000, - 100, 3000 );
+
     material = new THREE.ShaderMaterial( {
         uniforms: {
             "map": { type: "t", value: texture },
@@ -75,7 +80,7 @@ function init() {
     } );
 
     // 创建一个正方形
-    var geometry1 = new THREE.BoxGeometry( 200, 200, 200 );
+    var geometry1 = new THREE.BoxGeometry( 150, 150, 150 );
     var material1 = new THREE.MeshBasicMaterial( {map: loader.load('images/linxizhilu.jpg')} );
     cube = new THREE.Mesh( geometry1, material1 );
     cube.rotation.y = 100;

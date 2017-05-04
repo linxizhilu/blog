@@ -192,7 +192,8 @@
       store = window.sessionStorage,
       data;
       if(publicNet && !!key && !!(data = store.getItem(key))){
-      	arg.fn && arg.fn(data);
+      	// arg.fn && arg.fn(data);
+        resolve(data);
       	return;
       }
       window.fetch(arg.url,{

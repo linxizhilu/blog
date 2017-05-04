@@ -28,28 +28,21 @@
 	<link rel="stylesheet" type="text/css" href="css/normalize.css">
 	<link rel="stylesheet" type="text/css" href="css/marked.css">
 	<link rel="stylesheet" type="text/css" href="css/animate.css">
-	<link rel="stylesheet" type="text/css" href="css/showImg.css">
+	<link rel="stylesheet" type="text/css" href="css/pubu.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<!-- css外链引用 end -->
 </head>
 <body>
 <div id="sidebar"></div>
-<ul id="ul"style="list-style:none;"></ul>
+<div id="pubu">
+	<ul id="ul" style="list-style:none;"></ul>
+</div>
 <div id="content">
 	<div id="detail" class="animated">
 	</div>
 	<div id="backTop">T</div>
 </div>
 <div id="mask"></div>
-<!-- 引用 JS start -->
-<script src="js/marked.js" type="text/javascript" charset="utf-8" defer></script>
-<script src="js/prism.js" type="text/javascript" charset="utf-8" defer></script>
-<script src="js/cloud/three.min.js" charset="utf-8" defer></script>
-<script src="js/cloud/Detector.js" charset="utf-8" defer></script>
-<!-- <script src="js/rotateImg.js" charset="utf-8"></script> -->
-<script src="js/pubu.js" charset="utf-8"></script>
-<!-- 引用 JS end  -->
-</body>
 <!-- 引用three.js染色器 start-->
 <script id="vs" type="x-shader/x-vertex">
 varying vec2 vUv;
@@ -72,8 +65,20 @@ void main() {
 	gl_FragColor = mix( gl_FragColor, vec4( fogColor, gl_FragColor.w ), fogFactor );
 }
 </script>
-<!-- 引用three.js染色器 end-->
+<!-- 引用 JS start -->
+
+<script src="js/marked.js" type="text/javascript" charset="utf-8" defer></script>
+<script src="js/prism.js" type="text/javascript" charset="utf-8" defer></script>
+<script src="js/cloud/three.min.js" charset="utf-8" defer></script>
+<script src="js/cloud/Detector.js" charset="utf-8" defer></script>
+<!-- <script src="js/rotateImg.js" charset="utf-8"></script> -->
+<script src="js/pubu.js" charset="utf-8"></script>
 <script src="js/cloud.js" charset="utf-8" defer></script>
 <script src="js/utils.js" charset="utf-8"></script>
+<!-- <script src="js/jquery.js" charset="utf-8"></script>
+<script src="js/bice.js" charset="utf-8"></script>
+<script src="js/clickZoom.js" charset="utf-8"></script> -->
 <script type="text/javascript" src="js/index.js" defer></script>
+<!-- 引用 JS end  -->
+</body>
 </html>
