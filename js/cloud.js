@@ -32,10 +32,10 @@ require(['THREE','Detector'],function(THREE,Dectetor){
         var context = canvas.getContext( '2d' );
 
         var gradient = context.createLinearGradient( 0, 0, 0, canvas.height );
-        // gradient.addColorStop(0, "#1e4877");
-        // gradient.addColorStop(0.5, "#4584b4");
-        gradient.addColorStop(0.5, "#b2b2aa");
-        gradient.addColorStop(0, "#000000");
+        gradient.addColorStop(0, "#1e4877");
+        gradient.addColorStop(0.5, "#4584b4");
+        // gradient.addColorStop(0.5, "#b2b2aa");
+        // gradient.addColorStop(0, "#000000");
 
 
         context.fillStyle = gradient;
