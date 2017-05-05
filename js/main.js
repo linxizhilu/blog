@@ -1,29 +1,6 @@
 
-(function(global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ?
-    module.exports = factory() :
-    typeof define === 'function' && define.amd ?
-    define(factory) :
-    (global.clickZoom = factory());
-})(window,function(){
-    // (function (doc, win) {
-    //     var docEl = doc.documentElement,
-    //         resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-    //         recalc = function () {
-    //             var clientWidth = docEl.clientWidth;
-    //             if (!clientWidth) return;
-    //             if(clientWidth>=640){
-    //                 docEl.style.fontSize = '25px';
-    //             }else{
-    //                 docEl.style.fontSize = 25 * (clientWidth / 640) + 'px';
-    //             }
-    //         };
-    //
-    //     if (!doc.addEventListener) return;
-    //     win.addEventListener(resizeEvt, recalc, false);
-    //     doc.addEventListener('DOMContentLoaded', recalc, false);
-    // })(document, window);
-    (function(){
+require(['marked','prism','pubu','utils'],function(marked,prism,pubu,utils){
+
       var ary = ['forEach','map','push']
           ary.forEach((item,i)=>{
             window[item+'_native'] = ary[item];
@@ -33,6 +10,7 @@
           sidebarDom = document.querySelector('#sidebar'),
           contentDom = document.querySelector('#detail'),
           backTopDom = document.querySelector('#backTop'),
+          utils = utils || {},
           preFix = utils.firefox ? 'moz':'webkit';
       getData({url:'readme.md',
           		data:'',
@@ -299,5 +277,5 @@
       })(window);
       // 运动函数
 
-    })()
+    // })()
 })

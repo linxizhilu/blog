@@ -1,4 +1,4 @@
-require(['main'],function(main){
-    console.log(main);
-    main();
+require(['main','cloud'],function(main,cloud){
+    console.log(cloud);
+    // main();
 })

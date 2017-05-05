@@ -22,6 +22,10 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 	<!-- 不让android识别邮箱 -->
 	<meta name="format-detection" content="email=no" />
+	<!-- 设置浏览器不缓存 -->
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">
 
 	<link rel="shortcut icon" type="image/ico" href="icon/favicon.ico" />
 	<!-- css外链引用 start -->
@@ -31,6 +35,45 @@
 	<link rel="stylesheet" type="text/css" href="css/pubu.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<!-- css外链引用 end -->
+
+	<!-- 天气插件 -->
+	<script>
+	(function(T, h, i, n, k, P, a, g, e) {
+		g = function() {
+			P = h.createElement(i);
+			a = h.getElementsByTagName(i)[0];
+			P.src = k;
+			P.charset = "utf-8";
+			P.async = 1;
+			a.parentNode.insertBefore(P, a)
+		};
+		T["ThinkPageWeatherWidgetObject"] = n;
+		T[n] || (T[n] = function() {
+			(T[n].q = T[n].q || []).push(arguments)
+		});
+		T[n].l = +new Date();
+		if (T.attachEvent) {
+			T.attachEvent("onload", g)
+		} else {
+			T.addEventListener("load", g, false)
+		}
+	}(window, document, "script", "tpwidget", "//widget.seniverse.com/widget/chameleon.js"))
+</script>
+<script>
+	tpwidget("init", {
+		"flavor": "bubble",
+		"location": "WX4FBXXFKE4F",
+		"geolocation": "enabled",
+		"position": "top-left",
+		"margin": "10px 200px",
+		"language": "zh-chs",
+		"unit": "c",
+		"theme": "chameleon",
+		"uid": "U8EDF308FA",
+		"hash": "39b0b1040c3561f6ce68342fa1fe911d"
+	});
+	tpwidget("show");
+</script>
 </head>
 <body>
 <div id="sidebar"></div>
@@ -67,17 +110,19 @@ void main() {
 </script>
 <!-- 引用 JS start -->
 
-<script src="js/marked.js" type="text/javascript" charset="utf-8" defer></script>
+<!-- <script src="js/marked.js" type="text/javascript" charset="utf-8" defer></script>
 <script src="js/prism.js" type="text/javascript" charset="utf-8" defer></script>
 <script src="js/cloud/three.min.js" charset="utf-8" defer></script>
 <script src="js/cloud/Detector.js" charset="utf-8" defer></script>
-<!-- <script src="js/rotateImg.js" charset="utf-8"></script> -->
 <script src="js/pubu.js" charset="utf-8"></script>
 <script src="js/cloud.js" charset="utf-8" defer></script>
-<script src="js/utils.js" charset="utf-8"></script>
+<script src="js/utils.js" charset="utf-8"></script> -->
+<script src="js/require.js" data-main="js/config" charset="utf-8"></script>
+
 <!-- <script src="js/jquery.js" charset="utf-8"></script>
 <script src="js/bice.js" charset="utf-8"></script>
 <script src="js/clickZoom.js" charset="utf-8"></script> -->
+
 <script type="text/javascript" src="js/index.js" defer></script>
 <!-- 引用 JS end  -->
 </body>

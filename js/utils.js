@@ -674,5 +674,5 @@ var extendObj = {
     }
   }
   luq_Utils.prototype = extendObj.extend(true, luq_Utils.prototype,extendObj);
- return new luq_Utils();
+ return (utils = luq_Utils());
 })
