@@ -43,13 +43,21 @@ require(['marked','prism','pubu','utils'],function(marked,prism,pubu,utils){
             history.pushState({},'','index.html');
             contentDom.classList.add('bounceOutDown');
             contentDom.addEventListener(preFix+'AnimationEnd',function(){
+             showPubu();
+            });
+            setTimeout(function() {
+              if(contentDom.innerHTML!==''){
+                  showPubu();
+              }
+            },1000);
+            function showPubu(){
               if(!getPage()){
                 contentDom.innerHTML = '';
                 pubu(navDoms.length);
                 navAction(document.querySelectorAll('#ul a'));
                 document.querySelector('#ul').style.opacity=1;
               }
-            });
+            }
           }
         })
         if(!getPage()){
@@ -65,15 +73,46 @@ require(['marked','prism','pubu','utils'],function(marked,prism,pubu,utils){
       function navAction(doms){
         forEach_native.call(doms,(dom,i)=>{
           if(dom.href.indexOf('github.com')!=-1)return;
-          dom.href = 'javascript:;'
+          dom.href = 'javascript:;';
+          dom.index = i;
           dom.addEventListener('click',function(){
-          var self = this,
-            title = self.title;
+            var self = this,
+                title = self.title,
+                parent = self.parentNode,
+                top,
+                left,
+                ulDom,
+                liDom,
+                time = 0;
+            if((ulDom = document.querySelector('#ul')).style.opacity !== '0'){
+              if(!parent.style.transform){
+                parent = ulDom.querySelectorAll('li')[self.index];
+              }
+              top = parent.offsetTop,
+              left =  parent.offsetLeft;
+              mixin(top,left);
+              time = 1000;
+            }
             history.pushState({t:title},'','index.html?t='+title);
-            updateContent();
-            document.querySelector('#ul').style.opacity=0;
+            setTimeout(function(){
+              updateContent();
+              ulDom.style.opacity=0;
+            },time)
           })
         })
+        function mixin(top,left){
+          forEach_native.call(document.querySelectorAll('#ul a'),(dom,i)=>{
+            var parent = dom.parentNode;
+            parent.style.transition = 'all 0.5s ease-in-out '+Math.random()*0.5+'s';
+            parent.style.top = top+'px';
+            parent.style.left = left+'px';
+            parent.style.opacity = 0;
+            setTimeout(function(){
+              parent.style.transition = 'all 0.5s ease';
+              parent.style.opacity = 1;
+            },1500)
+          })
+        }
       }
       // 获取当前的query值
       function getPage(){

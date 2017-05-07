@@ -3,7 +3,7 @@
 require(['THREE','Detector'],function(THREE,Dectetor){
     var container;
     var camera, scene, renderer;
-    var mesh, geometry, material,cube,cubAry=[],count=0;
+    var mesh, geometry, material,cube,cubAry=[],count=0,rain;
 
     var mouseX = 0, mouseY = 0;
     var start_time = Date.now();
@@ -52,7 +52,11 @@ require(['THREE','Detector'],function(THREE,Dectetor){
         scene = new THREE.Scene();
         // 加载器
         var loader = new THREE.TextureLoader();
-        scene.background = loader.load( canvas.toDataURL('image/png') );
+        var cubeLoader = new THREE.CubeTextureLoader();
+        // scene.background = loader.load( canvas.toDataURL('image/png') );
+        scene.background = loader.load('images/san2.jpg');
+      //   scene.background = cubeLoader.load(['images/tree2.jpg','images/tree1.jpg',
+      // 'images/tree1.jpg','images/tree2.jpg','images/tree1.jpg','images/tree2.jpg']);
         // 创建图形
         geometry = new THREE.Geometry();
         // 创建纹理
@@ -62,7 +66,7 @@ require(['THREE','Detector'],function(THREE,Dectetor){
         texture.minFilter = THREE.LinearMipMapLinearFilter;
 
         // var fog = new THREE.Fog( 0x4584b4, - 100, 3000 );
-        var fog = new THREE.Fog( 0x000000, - 100, 3000 );
+        var fog = new THREE.Fog( 0x666666, - 100, 3000 );
 
         material = new THREE.ShaderMaterial( {
             uniforms: {
@@ -80,22 +84,30 @@ require(['THREE','Detector'],function(THREE,Dectetor){
         } );
 
         // 创建一个正方形
-        var geometry1 = new THREE.BoxGeometry( 150, 150, 150 );
-        var material1 = new THREE.MeshBasicMaterial( {map: loader.load('images/linxizhilu.jpg')} );
-        cube = new THREE.Mesh( geometry1, material1 );
-        cube.rotation.y = 100;
-        cube.position.y = 100;
-        scene.add( cube );
+        // var geometry1 = new THREE.BoxGeometry( 100, 100, 100 );
+        // var material1 = new THREE.MeshBasicMaterial( {map: loader.load('images/linxizhilu.jpg')} );
+        // cube = new THREE.Mesh( geometry1, material1 );
+        // cube.rotation.y = 100;
+        // cube.position.y = 220;
+        // cube.position.x= -200;
+        // scene.add( cube );
 
 
-        var plane = new THREE.Mesh( new THREE.PlaneGeometry( 64, 64 ) );
+        // // 创建雨滴
+        // rain =  new THREE.Mesh(new THREE.PlaneGeometry(100,50),new THREE.MeshBasicMaterial( {map: loader.load('images/rain2.jpg')} ));
+        // // rain.position.z  = 1000;
+        // scene.add( rain );
+
+        var plane = new THREE.Mesh( new THREE.PlaneGeometry( 100,100) );
 
         for ( var i = 0; i < 8000; i++ ) {
 
             plane.position.x = Math.random() * 1000 - 500;
-            plane.position.y = - Math.random() * Math.random() * 200 - 15;
+            plane.position.y = - Math.random() * Math.random() * 200 +15;
+            // plane.position.y = 0;
             plane.position.z = i;
-            plane.rotation.z = Math.random() * Math.PI;
+            plane.rotation.x = Math.random() * Math.PI;
+            // plane.rotation.x = -Math.PI*22/50;
             plane.scale.x = plane.scale.y = Math.random() * Math.random() * 1.5 + 0.5;
 
             THREE.GeometryUtils.merge( geometry, plane );
@@ -159,8 +171,9 @@ require(['THREE','Detector'],function(THREE,Dectetor){
         camera.position.x += ( mouseX - camera.position.x ) * 0.01;
         camera.position.y += ( - mouseY - camera.position.y ) * 0.01;
         camera.position.z = - position + 8000;
-        cube.position.z = camera.position.z -1000;
-        cube.rotation.y = mouseX*0.01;
+        // cube.position.z = camera.position.z -1000;
+        // rain.position.z = camera.position.z-10;
+        // cube.rotation.y = mouseX*0.01;
         // cube.rotation.x = -mouseY*0.05;
         // if(!!cubAry){
         //     for(var num,i=0,len=cubAry.length;i<len;i++){
