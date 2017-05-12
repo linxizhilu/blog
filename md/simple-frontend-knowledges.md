@@ -1,4 +1,128 @@
 # 零碎的前端笔记
+
+## 实现布局超2行内容溢出ellipse显示
+
+两种方法：
+使用css3控制:
+```javascript
+overflow: hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 2;
+-webkit-box-orient: vertical;
+```
+使用js控制
+```javascript
+var lastProducNameAry = [];
+//地址截取字符
+function strSub(selector,subSelector){
+   $(selector).each(function (i) {
+        var divH = $(this).height();
+        var $h2Dom = $(subSelector, $(this)),
+        	$h2Height = $h2Dom.height(),
+        	$h2Width = $h2Dom.width(),
+        	num,
+        	fontWidthEn,
+        	fontWidthZh,
+        	fontWidthSpace,
+        	fontWidth,
+        	text = $h2Dom.text(),
+        	textLength = text.length,
+        	count=0,
+        	totalLength=0,
+        	tempText,
+        	lastCount=10000,
+        	flag = true,
+        	h2Dom;
+    	if(!lastProducNameAry[i]){;
+       		lastProducNameAry[i] = text;
+    	}
+		text = lastProducNameAry[i];
+		textLength = text.length;
+        h2Dom = document.createElement(subSelector);
+		h2Dom.style.display='inline-block';
+		h2Dom.style.opacity='0';
+        h2Dom.innerHTML='a';
+        $(this).append(h2Dom);
+        fontWidthEn = h2Dom.offsetWidth;
+        h2Dom.innerHTML='一';
+        fontWidthZh = h2Dom.offsetWidth;
+        h2Dom.innerHTML=' ';
+        fontWidthSpace = h2Dom.offsetWidth;
+        $(h2Dom).remove();
+        while (count++ < textLength ) {
+        	tempText = text[count];
+            if(/[\da-zA-Z]/.test(tempText)){
+            	totalLength += fontWidthEn;
+            }else if(/[\u4e00-\u9fa5]/.test(tempText)){
+            	totalLength += fontWidthZh;
+            }else if(/[\s\f]/.test(tempText)){
+            	totalLength += fontWidthSpace;
+            }
+            if(totalLength+10 > $h2Width*2 && flag){
+            	lastCount = count-1;
+            	flag = false;
+        		count = textLength;
+            }
+        };
+        if( textLength >= lastCount ){
+        	lastCount -=5;
+            $h2Dom.text(text.substring(0,lastCount)+'...');
+        }
+    });
+}
+```
+
+## 媒体查询检查高清屏
+媒体查询检查高清屏代码：
+```css
+@media screen and (-webkit-min-device-pixel-ratio:2),
+screen and (min--moz-device-pixel-ratio:2),
+screen and (-o-min-device-piratio:200/100),
+screen and (min-device-pixel-ratio:2) {
+
+}
+```
+
+
+## 如何设置placeholder内容的字体颜色
+有两种方法，一是使用伪元素，是基于改变shadowdom而实现的样式，二是使用JS做处理，不适用placeholder而直接使用value进行赋值处理。
+
+使用伪元素和伪类的方法为：
+```javascript
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+color: #666;
+}
+input:-moz-placeholder, textarea:-moz-placeholder {
+color: #666;
+}
+input::-moz-placeholder, textarea::-moz-placeholder {
+color: #666;
+}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+color: #666;
+}
+```
+为了防止一个样式出问题，其它都不起作用，不要写在一起，分开写最安全。
+
+使用js方法：
+```javascript
+$('[placeholder]').focus(function() {
+	var input = $(this);
+	if (input.val() == input.attr('placeholder')) {
+	input.val('');
+	input.removeClass('placeholder');
+}
+}).blur(function() {
+	var input = $(this);
+	if (input.val() == '' || input.val() == input.attr('placeholder')) {
+	input.addClass('placeholder');
+	input.val(input.attr('placeholder'));
+}
+}).blur();
+```
+
+
 ## 如何关闭IE11的input控件中的自动删除和显示密码明文的功能
 在项目中遇到再IE11的input控件中，会有自动删除（X号，大小跟`font-size`有关）和显示密码为明文（眼睛）的功能，使用css伪类可关闭：
 ```css
