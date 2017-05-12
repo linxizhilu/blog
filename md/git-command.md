@@ -14,11 +14,17 @@ git rm -r --cached .
 ## 配置个人文件
 全局的可以在`c`盘下找到`gitconfig`文件，本地的在`git`目录下的`gitconfig`文件
 ```git
-git config --global user.name "luqiang1631@126.com" :个人邮箱，提交代码时使用，作为一个作者的标识
+git config --global user.name "linxizhilu" : 用户名称
+git config --global user.email "luqiang1631@126.com" :个人邮箱，提交代码时使用，作为一个作者的标识
 git config --global color.ui true ：显示带色彩
 git config --global alias.<newcommand> <oldcommand> :给一个命令起一个别名，方便使用
 git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"  :比较好用
 ```
+## 生成SSH Key
+```git
+$ ssh-keygen -t rsa -C "luqiang1631@126.com"
+```
+
 ## 添加到暂存区(缓存区)的命令
 ```git
 git add <filename>  :将制定文件添加到暂存区
