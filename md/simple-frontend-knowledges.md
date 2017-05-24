@@ -1,5 +1,59 @@
 # 零碎的前端笔记
 
+# font-size兼容IE的垂直居中
+
+如果父元素高度是已知的，要把它里面的子元素进行水平垂直居中，则可以使用这种方法，且子元素的宽度或高度都不必知道。
+该方法只对IE6和IE7有效。
+该方法的要点是给父元素设一个合适的font-size的值，这个值的取值为该父元素的高度除以1.14得到的值，并且子元素必须 是一个inline或inline-block元素，需要加上vertical-align:middle属性。
+```javascript
+
+style{
+    *zoom:1;*display:inline;//可以实现IE下面的display:inline-block的效果。    
+}
+
+```
+
+# 不定高度的图片垂直居中
+
+```javascript
+//css
+.pic_box{width:300px; height:300px; background-color:#beceeb; font-size:0; *font-size:200px; text-align:center;}
+.pic_box img{vertical-align:middle;}
+.pic_box:after{display:inline-block; width:0; height:100%; content:"center"; vertical-align:middle; overflow:hidden;}
+
+//html
+<div class="pic_box">
+    <img data-src="mm1.jpg" />
+</div>
+
+```
+
+
+# 清除浮动效果
+使用:after伪类清除浮动，使用ie的zoom私有属性兼容ie6/7
+
+```javascript
+.fix{*zoom:1;}
+.fix:after{display:block; content:"clear"; height:0; clear:both; overflow:hidden; visibility:hidden;}
+```
+
+# 关于appendChild的用法
+
+```javascript
+
+while (dom.firstChild) out.appendChild(dom.firstChild);
+
+```
+`while` 关键字后面不加大括号，只能管到其后面的一句话。而`appendChild`的特性，可以使其不进入死循环。即：
+
+> 如果被`appendChild`插入的节点已经存在于当前文档的文档树中,则那个节点会首先从原先的位置移除,然后再插入到新的位置.可以先用`Node.cloneNode`方法复制出一个节点的副本,然后在插入到新位置.
+
+## display:table属性
+1. 可以实现垂直居中。
+2. 可以使元素像table表格一样展示。
+3. 对margin 无反应，可以响应padding。
+4. 通常`display:table`;`display:table-row`;`display:table-cell`一起使用。
+
 ## 实现布局超2行内容溢出ellipse显示
 
 两种方法：
