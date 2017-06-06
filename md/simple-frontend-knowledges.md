@@ -1,5 +1,21 @@
 # 零碎的前端笔记
 
+# 浏览器端iphone存在原生左右滚动的区域下，上下滚动受限
+
+给相关的dom元素wrapper添加下面css样式代码
+```javascript
+-webkit-overflow-scrolling : touch;
+```
+**添加该样式后会对其内部的input控件产生影响，导致其在输入文字的时候无法输入**。
+
+# 判断isIE的方法
+
+```javascript
+
+var isIE = !!window.ActiveXObject || "ActiveXObject" in window;
+
+```
+
 # font-size兼容IE的垂直居中
 
 如果父元素高度是已知的，要把它里面的子元素进行水平垂直居中，则可以使用这种方法，且子元素的宽度或高度都不必知道。
